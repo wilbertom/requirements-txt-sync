@@ -16,8 +16,14 @@ def test_requirements_used():
 
 
 def test_verify_requirements():
-    assert verify_requirements({"Flask": "0.1.0"}, {"Flask": None} ) == ["Flask needs to be 0.1.0"]
-    assert verify_requirements({"Flask": "0.0.0", "SQLAlchemy": "0.0.0"}, {}) == ["Flask is missing", "SQLAlchemy is missing"]
+    assert verify_requirements({"Flask": "0.1.0"}, {"Flask": None}) == [
+        "Flask needs to be 0.1.0"
+    ]
+    assert verify_requirements({"Flask": "0.0.0", "SQLAlchemy": "0.0.0"}, {}) == [
+        "Flask is missing",
+        "SQLAlchemy is missing",
+    ]
     assert verify_requirements({"Flask": None}, {}) == ["Flask is missing"]
-    assert verify_requirements({}, {"Flask": None}) == ["Flask should be uninstalled or added to root"]
-
+    assert verify_requirements({}, {"Flask": None}) == [
+        "Flask should be uninstalled or added to root"
+    ]
