@@ -13,17 +13,6 @@ def requirements_used(file):
     return requirements
 
 
-def requirements_used_in_multiple_files(files):
-    requirements = {}
-
-    for file in files:
-        for line in file:
-            name, version = _parse_requirement_line(line)
-            requirements[name] = version
-
-    return requirements
-
-
 def _parse_requirement_line(line):
     line = line.strip("\n")
     line = line.split("==")
