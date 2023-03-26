@@ -27,45 +27,45 @@ def _parse_requirement_line(line):
     return name, version
 
 
-def verify_requirements(requirements_1, requirements_2, file_name):
+def verify_requirements(root, app_txt_file, file_name):
     warnings = []
 
-    for requirement, version in requirements_2.items():
-        if requirement not in requirements_1.keys():
+    for requirement, version in app_txt_file.items():
+        if requirement not in root.keys():
             warnings.append(
                 f"{file_name}: {requirement} should be uninstalled or added to root."
             )
-        elif requirements_2[requirement] != requirements_1[requirement]:
+        elif app_txt_file[requirement] != root[requirement]:
             if version != None:
                 warnings.append(
-                    f"{file_name}: {requirement}={version} needs to be {requirement}=={requirements_1[requirement]}"
+                    f"{file_name}: {requirement}={version} needs to be {requirement}=={root[requirement]}"
                 )
             else:
                 warnings.append(
-                    f"{file_name}: {requirement} needs to be {requirement}=={requirements_1[requirement]}"
+                    f"{file_name}: {requirement} needs to be {requirement}=={root[requirement]}"
                 )
 
     return warnings
 
 
-def replace_requirements(requirements_1, requirements_2):
+def replace_requirements(root, app_txt_file):
     replaced_requirements = []
-    for requirement, version in requirements_2.items():
-        if requirement in requirements_1.keys():
-            if requirements_1[requirement] == requirements_2[requirement]:
-                if requirements_1[requirement] is None:
+    for requirement in app_txt_file.keys():
+        if requirement in root.keys():
+            if root[requirement] == app_txt_file[requirement]:
+                if root[requirement] is None:
                     replaced_requirements.append(f"{requirement}")
                 else:
                     replaced_requirements.append(
-                        f"{requirement}=={requirements_1[requirement]}"
+                        f"{requirement}=={root[requirement]}"
                     )
 
-            elif requirements_1[requirement] != requirements_2[requirement]:
-                if requirements_1[requirement] is None:
+            elif root[requirement] != app_txt_file[requirement]:
+                if root[requirement] is None:
                     replaced_requirements.append(f"{requirement}")
                 else:
                     replaced_requirements.append(
-                        f"{requirement}=={requirements_1[requirement]}"
+                        f"{requirement}=={root[requirement]}"
                     )
 
     return replaced_requirements
