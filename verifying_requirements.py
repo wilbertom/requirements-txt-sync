@@ -1,13 +1,13 @@
 import sys
 from functions_for_program import (
     requirements_used,
-    verify_requirements
+    verify_requirements,
+    replace_requirements,
 )
 
 # what if i make this is a whole for loop where it goes by file, instead of putting everything in one?
 
 for file_name in sys.argv[2:]:
-    
     file_1 = open(sys.argv[1])
     file_2 = open(file_name)
 
@@ -20,4 +20,11 @@ for file_name in sys.argv[2:]:
 
     for warning in warnings:
         print(warning)
- 
+
+    with open(file_name, "w") as file:
+        updated_requirements = replace_requirements(
+            requirements_in_file_1, requirements_in_file_2
+        )
+
+        for requirement in updated_requirements:
+            file.write(f"{requirement}\n")

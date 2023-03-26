@@ -30,22 +30,42 @@ def _parse_requirement_line(line):
 def verify_requirements(requirements_1, requirements_2, file_name):
     warnings = []
 
-    for requirement, version in requirements_1.items():
-        if requirement in requirements_2.keys():
-            if requirements_1[requirement] != requirements_2[requirement]:
-                if requirements_2[requirement] is None:
-                    warnings.append(
-                        f"{requirement} needs to be {requirement}=={version} in {file_name}"
-                    )
-
     for requirement, version in requirements_2.items():
         if requirement not in requirements_1.keys():
             warnings.append(
-                f"{requirement} should be uninstalled or added to root in {file_name}"
+                f"{file_name}: {requirement} should be uninstalled or added to root."
             )
         elif requirements_2[requirement] != requirements_1[requirement]:
-            warnings.append(
-                f"{requirement}=={version} needs to be {requirement} in {file_name}"
-            )
+            if version != None:
+                warnings.append(
+                    f"{file_name}: {requirement}={version} needs to be {requirement}=={requirements_1[requirement]}"
+                )
+            else:
+                warnings.append(
+                    f"{file_name}: {requirement} needs to be {requirement}=={requirements_1[requirement]}"
+                )
 
     return warnings
+
+
+def replace_requirements(requirements_1, requirements_2):
+    replaced_requirements = []
+    for requirement, version in requirements_2.items():
+        if requirement in requirements_1.keys():
+            if requirements_1[requirement] == requirements_2[requirement]:
+                if requirements_1[requirement] is None:
+                    replaced_requirements.append(f"{requirement}")
+                else:
+                    replaced_requirements.append(
+                        f"{requirement}=={requirements_1[requirement]}"
+                    )
+
+            elif requirements_1[requirement] != requirements_2[requirement]:
+                if requirements_1[requirement] is None:
+                    replaced_requirements.append(f"{requirement}")
+                else:
+                    replaced_requirements.append(
+                        f"{requirement}=={requirements_1[requirement]}"
+                    )
+
+    return replaced_requirements
