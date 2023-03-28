@@ -56,16 +56,17 @@ def replace_requirements(root, app_txt_file):
                 if root[requirement] is None:
                     replaced_requirements.append(f"{requirement}")
                 else:
-                    replaced_requirements.append(
-                        f"{requirement}=={root[requirement]}"
-                    )
+                    replaced_requirements.append(f"{requirement}=={root[requirement]}")
 
             elif root[requirement] != app_txt_file[requirement]:
                 if root[requirement] is None:
                     replaced_requirements.append(f"{requirement}")
                 else:
-                    replaced_requirements.append(
-                        f"{requirement}=={root[requirement]}"
-                    )
+                    replaced_requirements.append(f"{requirement}=={root[requirement]}")
 
     return replaced_requirements
+
+
+def write_requirements(f, requirements):
+    lines = "\n".join(requirements)
+    f.write(lines)
